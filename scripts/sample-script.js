@@ -10,7 +10,12 @@ async function main() {
   contractFactory = await ethers.getContractFactory("Staking");
   stakeContract = await contractFactory.deploy(tokenContract.address);
   await stakeContract.deployed();
-  console.log(tokenContract.address, stakeContract.address);
+  console.log(
+    "Token address: ",
+    tokenContract.address,
+    "\n Staking contract: ",
+    stakeContract.address
+  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere

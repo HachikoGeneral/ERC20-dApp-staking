@@ -30,8 +30,11 @@ function App() {
         navigate("/LandingPage");
       }
     } catch (error) {
-      console.log(error);
-      dispatch(CONNECTION_FAILED());
+      const payload = {
+        msgErr: error.message,
+        codeErr: error.code,
+      };
+      dispatch(CONNECTION_FAILED(payload));
     }
   }
 

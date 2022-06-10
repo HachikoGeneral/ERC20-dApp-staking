@@ -16,6 +16,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
+const privateKey1 =
+  "ac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 module.exports = {
   solidity: "0.8.4",
   paths: {
@@ -24,6 +26,10 @@ module.exports = {
   networks: {
     hardhat: {
       chainId: 1337,
+    },
+    bsctestnet: {
+      url: "https://data-seed-prebsc-1-s3.binance.org:8545/",
+      accounts: [privateKey1],
     },
   },
 };

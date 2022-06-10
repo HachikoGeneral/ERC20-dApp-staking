@@ -21,7 +21,7 @@ contract Staking is Ownable {
 
     constructor(address _ERC20Address)  {
         _token = IERC20(_ERC20Address);
-        maximumAmountStaked = 100 ether;
+        maximumAmountStaked = 1000 ether;
         minimumAmountToStake = 10 ether;
         paused = false;
     }
@@ -104,7 +104,7 @@ contract Staking is Ownable {
         reward = reward.div(1 hours);
         reward = reward.mul(_currentStake.amount);
         reward = reward.mul(1255);
-        reward = reward.div(10**8);
+        //reward = reward.div(10**8);
 
         return reward;
 
@@ -121,6 +121,22 @@ contract Staking is Ownable {
         return totalReward;
     }
 
+     function computeRewardPerStake(uint256 _stakeIndex)
+        public
+        view
+        returns (uint256)
+    {
+    
+
+        uint256 user_index = stakes[msg.sender];
+        Stake memory currentStake = stakeholders[user_index].address_stakes[
+            _stakeIndex
+        ];
+
+        uint256 reward = computeStakeRewards(currentStake);
+        return reward;
+    }
+
     function harvestReward (uint256 _stakeIndex) public  {
         uint256 user_index = stakes[msg.sender];
         Stake memory currentStake = stakeholders[user_index].address_stakes[_stakeIndex] ;
@@ -129,8 +145,8 @@ contract Staking is Ownable {
         uint256 minimumAmount = 0.1 ether;
         uint256 reward = computeStakeRewards(currentStake);
 
-        require (reward > minimumAmount , "Minimum harvest amount is 10 MTK");
-        require (currentTimeStamp - sinceIsStaking > 1 weeks,
+        //require (reward > minimumAmount , "Minimum harvest amount is 10 MTK");
+        require (currentTimeStamp - sinceIsStaking > 1 minutes,
         "Minimum period until you can harvest your reward is 7 days");
         
         stakeholders[user_index].address_stakes[_stakeIndex].since = block.timestamp;
@@ -145,7 +161,7 @@ contract Staking is Ownable {
         Stake memory currentStake = stakeholders[user_index].address_stakes[_stakeIndex];
         uint256 currentTimeStamp = block.timestamp;
         uint256 sinceIsStaking = currentStake.since;
-        uint256 minimumTime = 1 weeks;
+        uint256 minimumTime = 1 minutes;
 
         require (currentTimeStamp - sinceIsStaking >= minimumTime ,
         "You can only withdraw after a minimum of 7 days");
@@ -159,6 +175,23 @@ contract Staking is Ownable {
 
         _token.transfer(msg.sender, totalAmount);
 
+    }
+
+    function getTotalStakedOfStaker(address _staker)
+        external
+        view
+        onlyOwner
+        returns (uint256)
+    {
+        uint256 totalStaked;
+        uint256 user_index = stakes[_staker];
+
+        Stake[] memory currentStakes = stakeholders[user_index].address_stakes;
+        for (uint256 i = 0; i < currentStakes.length; i++) {
+            totalStaked = totalStaked + currentStakes[i].amount;
+        }
+
+        return totalStaked;
     }
     
     function getTotalRewardOfStaker(address staker)
@@ -205,6 +238,14 @@ contract Staking is Ownable {
         }
     }
 
-        
+    function getAllStakes() external view returns (Stake[] memory) {
+        uint256 user_index = stakes[msg.sender];
+        return stakeholders[user_index].address_stakes;
+    }
+
+    function getTotalStaked() public view onlyOwner returns (uint256) {
+        return totalAmountStaked;
+    }
+
 
 }
