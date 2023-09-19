@@ -23,7 +23,7 @@ export default function StakePage() {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     //Pentru instantiere contract avem nevoie de adresa lui,ABI si signer
-    const stakeaddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+    const stakeaddress = "0xC04f12d19dae41480Baf55193189c2339a9E8b7D";
     const tokenaddress = "0x2e5E530dC2C6b2A8f214ee929dC4a302575881A9";
     const payload = { stake: stakeaddress, token: tokenaddress };
     dispatch(CONTRACTS_SUCCESSFUL(payload));
