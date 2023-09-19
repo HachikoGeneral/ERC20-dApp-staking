@@ -20,8 +20,8 @@ contract Staking is Ownable {
     bool paused;
 
     constructor(address _ERC20Address)  {
-        _token = IERC20(_ERC20Address);
-        maximumAmountStaked = 1000 ether;
+        _token = IERC20(0x2e5E530dC2C6b2A8f214ee929dC4a302575881A9);
+        maximumAmountStaked = 10000 ether;
         minimumAmountToStake = 10 ether;
         paused = false;
     }
@@ -70,7 +70,7 @@ contract Staking is Ownable {
         require (!paused , "Staking is currently paused !");
         require (
             _amount >= minimumAmountToStake,
-            "Minimum amount to stake is 10 MTK"
+            "Minimum amount to stake is 10 WCHK"
         );
         require(
             (totalAmountStaked + _amount) <= maximumAmountStaked,
