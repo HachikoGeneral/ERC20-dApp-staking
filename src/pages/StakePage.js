@@ -6,7 +6,6 @@ import {
   CONTRACTS_SUCCESSFUL,
 } from "../features/slicers/blockainSlicer";
 import Staking from "../artifacts/contracts/Stake.sol/Staking.json";
-import Token from "../artifacts/contracts/MyToken.sol/MyToken.json";
 import { FunctionFragment } from "ethers/lib/utils";
 
 export default function StakePage() {
@@ -25,7 +24,7 @@ export default function StakePage() {
     const signer = provider.getSigner();
     //Pentru instantiere contract avem nevoie de adresa lui,ABI si signer
     const stakeaddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
-    const tokenaddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+    const tokenaddress = "0x2e5E530dC2C6b2A8f214ee929dC4a302575881A9";
     const payload = { stake: stakeaddress, token: tokenaddress };
     dispatch(CONTRACTS_SUCCESSFUL(payload));
     const stakingABI = Staking.abi;
